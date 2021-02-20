@@ -21,7 +21,7 @@
 
 
     - name: Build docker image
-      command: ' docker build /tmp/docker -f ../container -t "flask-api:latest" --build-arg PYTHON_MODULES="{{ modules }}"  {{ extra_build_args }}'  
+      command: ' docker build ../container -t "flask-api:latest" --build-arg PYTHON_MODULES="{{ modules }}"  {{ extra_build_args }}'  
   
 
     - name: Tag and push to repository
