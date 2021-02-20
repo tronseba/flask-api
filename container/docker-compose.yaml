@@ -1,0 +1,29 @@
+version: "3"
+services:
+  redis:
+    image: redis
+    domainname: redis.svc
+    networks:
+      - backend
+  api:
+    image: python-test:latest
+    depends_on:
+      - redis
+    links:
+      - "redis:redis.svc"
+  
+    environment:
+      REDIS_HOST: redis.svc
+      REDIS_PORT: 6379
+      BIND_PORT: 8080
+    ports:
+      - 8080:8080
+    networks:
+      - backend
+
+
+networks:
+  backend:
+    driver: bridge
+
+  

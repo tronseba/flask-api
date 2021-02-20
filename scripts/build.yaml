@@ -1,0 +1,34 @@
+- name: Build docker iamges with its dependecies
+  hosts: localhost
+ 
+  tasks:
+    - name: import default vars
+      include_vars:
+        file: default-vars.yaml
+        
+
+    - name: get latest tag name
+      shell: "git describe --tags `git rev-list --tags --max-count=1`"
+      register: image_tag_command
+      when: image_tag is undefined 
+
+    - set_fact:
+        image_tag: "{{ image_tag_command.stdout }}" 
+      when: image_tag is undefined
+    - set_fact:
+        push_image: no
+      when: push_image is undefined
+
+
+    - name: Build docker image
+      command: ' docker build /tmp/docker -f ../container -t "flask-api:latest" --build-arg PYTHON_MODULES="{{ modules }}"  {{ extra_build_args }}'  
+  
+
+    - name: Tag and push to repository
+      docker_image:
+        name: "flask-api:latest"
+        repository: "{{ docker_image_full_path }}:{{ image_tag }}"
+        push: yes
+        force_tag: yes
+        source: local
+      when: push_image == "yes"  

@@ -1,0 +1,20 @@
+##docker related variables
+
+#regidtry base url
+docker_registry: "xxx.xxx.com"
+
+#registry namespace o tenant
+registry_namespace: "default_namespace"
+
+#docker image name
+image_name: "flask-api"
+
+#do not change, dis bult the full path of docker image except tag
+docker_image_full_path: "{{ docker_registry }}/{{ registry_namespace }}/{{ image_name }}" 
+
+# Python Module list
+modules: "flask redis"
+
+#Additional Docker build args
+
+extra_build_args: "--no-cache"
